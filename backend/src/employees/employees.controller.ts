@@ -19,8 +19,8 @@ export class EmployeesController {
     }
 
     @Post()
-    create(@Body() createEmployeeDto :  CreateEmployeeDto){
-        return this.employeeService.create(createEmployeeDto);
+    create(@Body() employeeData :  CreateEmployeeDto){
+        return this.employeeService.create(employeeData);
     }
 
     @Put(':id')
@@ -28,7 +28,7 @@ export class EmployeesController {
         return this.employeeService.update(id ,updateEmployeeDto);
     }
 
-    @Delete(':id')
+    @Delete(':id')         
     remove(@Param('id' , ParseIntPipe) id : number){
         return this.employeeService.remove(id);
     }
