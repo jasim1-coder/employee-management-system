@@ -9,6 +9,7 @@ import {
 } from 'class-validator';
 
 export class CreateEmployeeDto {
+    
   @IsString()
   @IsNotEmpty()
   @MinLength(2)
