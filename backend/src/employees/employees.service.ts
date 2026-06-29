@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 
@@ -19,6 +19,12 @@ export class EmployeesService {
     }
 
     create(emp : CreateEmployeeDto){
+
+        const existingEmployee = this.employees.find(employee => employee.email === emp.email);
+        if(existingEmployee){
+            throw new ConflictException("Email already exists.")
+        }
+
         const newEmployee = {
             id : this.employees.length + 1 ,
             firstName: emp.firstName ,

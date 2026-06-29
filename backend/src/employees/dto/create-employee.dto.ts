@@ -9,7 +9,7 @@ import {
 } from 'class-validator';
 
 export class CreateEmployeeDto {
-    
+    @Http
   @IsString()
   @IsNotEmpty()
   @MinLength(2)
