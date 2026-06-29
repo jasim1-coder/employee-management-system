@@ -1,60 +1,81 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class EmployeesService {
 
-    private employees = [
-        { id: 1 ,firstName : 'muhammed', lastName : 'jasim' , email : 'jasim@gmail.com' , phone : '8181818181' , department : 'IT' , salary :5000},
-        {id : 2 , firstName : 'muhammed', lastName : 'jebin' , email : 'jebin@gmail.com' , phone : '8111818181' , department : 'IT' , salary :8000},
-    ]
+    constructor(private readonly prisma : PrismaService) {}
 
-    findAll(){
-        return this.employees;
+    async findAll(){
+        return  this.prisma.employee.findMany();
     }
 
-    findOne(id : number){
-        return this.employees.find(employee => employee.id === id);
+    async findOne(id : string){
+        
+        const employee = await this.prisma.employee.findUnique({where:{id},});
+        if(!employee){
+            throw new NotFoundException("Employee not found") ;
+        }
+
+        return employee;
     }
+ 
+   async create(emp : CreateEmployeeDto){
 
-    create(emp : CreateEmployeeDto){
-
-        const existingEmployee = this.employees.find(employee => employee.email === emp.email);
+        const existingEmployee = await this.prisma.employee.findUnique({where:{ email : emp.email,},});
         if(existingEmployee){
             throw new ConflictException("Email already exists.")
         }
 
-        const newEmployee = {
-            id : this.employees.length + 1 ,
+          const newEmployee = await  this.prisma.employee.create({
+            data : {
             firstName: emp.firstName ,
             lastName: emp.lastName,
             email: emp.email,
             phone:  emp.phone,
             department: emp.department,
             salary: emp.salary,
-        }
-        this.employees.push(newEmployee);
-        return newEmployee ;
-    }
+                }
+            })
+        return newEmployee;
+        };
+        
 
-    update(id : number , emp : UpdateEmployeeDto){
-        const employee = this.employees.find(employee => employee.id === id);
+   async update(id : string , emp : UpdateEmployeeDto){
+        const employee = await this.prisma.employee.findUnique({
+            where : {id},
+        });
 
         if(!employee){
             throw new NotFoundException('Employee not found')
         }
-        const updatedEmployee = {
-            ...employee,
+
+      const updatedUployee = await this.prisma.employee.update({
+        where : {
+            id,
+        },
+        data : {
             ...emp
         }
-        const position = this.employees.findIndex(employeees => employeees.id === id);
-        this.employees[position] = updatedEmployee; 
-        return updatedEmployee;
-    }
+      })
+      return updatedUployee;
+        
+    };
 
-    remove(id : number){
-        this.employees = this.employees.filter(emp => emp.id !== id);
+    async remove(id : string){
+
+        const employee = await this.prisma.employee.findUnique({where:{id},});
+        if(!employee){
+            throw new NotFoundException("Employee not found") ;
+        }
+
+      await  this.prisma.employee.delete({
+            where : {
+                id
+            }
+        });
         return { message :"Employee deleted successfully"} ;
     }
 

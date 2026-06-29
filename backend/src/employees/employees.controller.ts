@@ -14,7 +14,7 @@ export class EmployeesController {
     }
     
     @Get(':id')
-     findOne (@Param('id', ParseIntPipe) id : number){
+     findOne (@Param('id') id : string){
             return this.employeeService.findOne(id);
     }
 
@@ -24,13 +24,13 @@ export class EmployeesController {
     }
 
     @Put(':id')
-    update(@Body() updateEmployeeDto : UpdateEmployeeDto , @Param('id',  ParseIntPipe) id : number){
+    update(@Body() updateEmployeeDto : UpdateEmployeeDto , @Param('id') id : string){
         return this.employeeService.update(id ,updateEmployeeDto);
     }
 
     @Delete(':id')   
     @HttpCode(HttpStatus.OK)      
-    remove(@Param('id' , ParseIntPipe) id : number){
+    remove(@Param('id' , ) id : string){
         return this.employeeService.remove(id);
     }
 
