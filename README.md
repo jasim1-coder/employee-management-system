@@ -55,8 +55,8 @@ npm run dev
 ## Roadmap
 
 * [x] Project Setup
-* [ ] Employee CRUD
-* [ ] DTO Validation
+* [x] Employee CRUD
+* [x] DTO Validation
 * [ ] PostgreSQL Integration
 * [ ] Prisma ORM
 * [ ] JWT Authentication
