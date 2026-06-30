@@ -4,12 +4,17 @@ import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth/jwt-auth.guard';
+
+import { RolesGuard } from 'src/auth/guards/roles/roles.guard';
+import { Roles } from 'src/auth/decorators/roles/roles.decorator';
+import { Role } from '@prisma/client';
 @Controller('employees')
 export class EmployeesController {
 
     constructor(private readonly employeeService :  EmployeesService)  {}
 
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.ADMIN)
     @Get()
     findAll(){
         return this.employeeService.findAll();
