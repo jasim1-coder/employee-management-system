@@ -59,8 +59,8 @@ npm run dev
 * [x] DTO Validation
 * [x] PostgreSQL Integration
 * [x] Prisma ORM
-* [ ] JWT Authentication
-* [ ] Role-Based Authorization
+* [x] JWT Authentication
+* [x] Role-Based Authorization
 * [ ] Swagger Documentation
 * [ ] React Frontend
 * [ ] Docker
