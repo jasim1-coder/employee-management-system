@@ -57,8 +57,8 @@ npm run dev
 * [x] Project Setup
 * [x] Employee CRUD
 * [x] DTO Validation
-* [ ] PostgreSQL Integration
-* [ ] Prisma ORM
+* [x] PostgreSQL Integration
+* [x] Prisma ORM
 * [ ] JWT Authentication
 * [ ] Role-Based Authorization
 * [ ] Swagger Documentation
