@@ -31,12 +31,7 @@ export class EmployeesService {
 
           const newEmployee = await  this.prisma.employee.create({
             data : {
-            firstName: emp.firstName ,
-            lastName: emp.lastName,
-            email: emp.email,
-            phone:  emp.phone,
-            department: emp.department,
-            salary: emp.salary,
+            ...emp
                 }
             })
         return newEmployee;
@@ -52,7 +47,7 @@ export class EmployeesService {
             throw new NotFoundException('Employee not found')
         }
 
-      const updatedUployee = await this.prisma.employee.update({
+      const updatedEmployee = await this.prisma.employee.update({
         where : {
             id,
         },
@@ -60,7 +55,7 @@ export class EmployeesService {
             ...emp
         }
       })
-      return updatedUployee;
+      return updatedEmployee;
         
     };
 
