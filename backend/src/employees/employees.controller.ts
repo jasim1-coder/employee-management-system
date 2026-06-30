@@ -2,12 +2,14 @@ import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseIntPip
 import { EmployeesService } from './employees.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
-
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth/jwt-auth.guard';
 @Controller('employees')
 export class EmployeesController {
 
     constructor(private readonly employeeService :  EmployeesService)  {}
 
+    @UseGuards(JwtAuthGuard)
     @Get()
     findAll(){
         return this.employeeService.findAll();
