@@ -3,11 +3,17 @@ import { CreateUserDto } from 'src/users/dto/create-user-dto.dto';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
 import { LoginDto } from './dto/login.dto';
+import { JwtService } from '@nestjs/jwt';
+import { access } from 'fs';
 
 @Injectable()
 export class AuthService {
 
-        constructor(private userService : UsersService){}
+        constructor(
+            private readonly userService : UsersService,
+            private readonly jwtService : JwtService
+
+        ){}
 
     async register(createUserDto : CreateUserDto){
             const existingUser = await this.userService.findByEmail(createUserDto.email)
@@ -41,13 +47,16 @@ export class AuthService {
         throw new UnauthorizedException("Invalid email or password.");
         }
 
-        return {
-    id: user.id,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    role: user.role,
-};
+        const payload = {
+            sub: user.id,
+            email : user.email,
+            role: user.role,
+        };
+        const accessToken = await this.jwtService.signAsync(payload);
+
+        return{
+            access_token : accessToken,
+        };
 
     }
 
