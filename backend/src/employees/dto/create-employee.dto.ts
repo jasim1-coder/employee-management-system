@@ -36,7 +36,7 @@ export class CreateEmployeeDto {
   @IsNotEmpty()
   @MinLength(2)
   @MaxLength(50)
-  department: string;
+departmentId: string;
 
   @IsNumber()
   @Min(0)
